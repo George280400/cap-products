@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1"
+    
   },
   "scripts": {
     "start": "cds watch"
