@@ -185,7 +185,3 @@ extend Products with {
     PriceCondition     : String(2);
     PriceDetermination : String(3);
 }
-
-entity George{
-    
-}
