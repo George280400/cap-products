@@ -20,7 +20,7 @@ using com.george as george from '../db/schema';
 define service CatalogService {
 
     entity Products          as
-        select from george.materials.Products {
+        select from george.reports.Products {
 
             ID,
             Name          as ProductName     @mandatory,
@@ -32,7 +32,13 @@ define service CatalogService {
             Height,
             Width,
             Depth,
-            Quantity,
+            Quantity                         @(
+                mandatory,
+                assert.range: [
+                    0.00,
+                    20.00
+                ]
+            ),
             UnitOfMeasure as ToUnitOfMeasure @mandatory,
             Currency      as ToCurrency      @mandatory,
             Category      as ToCategory      @mandatory,
@@ -40,7 +46,10 @@ define service CatalogService {
             DimensionUnit as ToDimensionUnit,
             SalesData,
             Supplier,
-            Reviews
+            Reviews,
+            Rating,
+            StockAvailability,
+            ToStockAvailibilty
 
         };
 
@@ -121,10 +130,71 @@ define service CatalogService {
 
     @readonly
     entity VH_DimensionUnits as
-        select from george.materials.DimensionUnits {
-
+        select
             ID          as Code,
             Description as Text
+        from george.materials.DimensionUnits;
+}
 
-        };
+define service MyService {
+
+    entity SuppliersProduct  as
+        select from george.materials.Products[Name = 'Bread']{
+
+            *,
+            Name,
+            Description,
+            Supplier.Address
+
+        }
+        where
+            Supplier.Address.PostalCode = 98074;
+
+    entity SupliersToSales   as
+        select
+            Supplier.Email,
+            Category.Name,
+            SalesData.Currency.ID,
+            SalesData.Currency.Description
+        from george.materials.Products;
+
+
+    entity EntityInFix       as
+        select
+
+        Supplier[Name = 'Exotic Liquids'].Phone
+
+        from george.materials.Products
+        where
+            Products.Name = 'Bread';
+
+    entity EntityJoin        as
+        select Phone from george.materials.Products
+        left join george.sales.Suppliers as supp
+            on(
+                supp.ID = Products.Supplier.ID
+            )
+            and supp.Name = 'Exotic Liquids'
+
+        where
+            Products.Name = 'Bread'
+}
+
+define service Reports {
+
+    entity AverageRating     as projection on george.reports.AverageRating;
+
+    entity EntityCasting     as
+        select
+            cast(
+                Price as      Integer
+            )     as Price,
+            Price as Price2 : Integer
+        from george.materials.Products;
+
+
+        entity EntityExist as select from george.materials.Products{
+            Name
+        } where exists Supplier[Name = 'Exotic Liquids'];
+
 }
