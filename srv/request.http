@@ -12,7 +12,7 @@ Content-Type: application/json
     "ClientEmail": "jch127518@gmail.com",
     "FirstName": "George",
     "LastName": "Contreras",
-    "CreatedOn" : "2000-04-28"
+    "CreatedOn" : "2011-06-12"
 }
 
 ### Update Order
@@ -26,3 +26,29 @@ Content-Type: application/json
 
 ### Delete Order
 DELETE  http://localhost:4004/odata/v4/manage-orders/Orders('jch127518@gmail.com')
+
+### Get Customer Rate - Function
+GET http://localhost:4004/odata/v4/manage-orders/getClientTaxRate(clientEmail='client2@client2.com')
+
+### Cancel Order - Action
+
+POST http://localhost:4004/odata/v4/manage-orders/cancelOrder
+Content-Type: application/json
+
+{
+    "clientEmail" : "client2@client2.com"
+}
+
+### Get Customer Rate - Function Bound
+GET http://localhost:4004/odata/v4/manage-orders/getClientTaxRate(clientEmail='client2@client2.com')
+
+### Cancel Order - Action Bound
+POST http://localhost:4004/odata/v4/manage-orders/cancelOrder
+Content-Type: application/json
+
+{
+    "clientEmail" : "client2@client2.com"
+}
+
+### Get Incidents
+GET http://localhost:4004/odata/v4/sapbackend-exit/Incidents

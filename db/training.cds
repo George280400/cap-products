@@ -1,6 +1,6 @@
 namespace com.training;
 
-using { cuid } from '@sap/cds/common';
+using { cuid, Country } from '@sap/cds/common';
 
 entity Orders {
 
@@ -10,9 +10,8 @@ entity Orders {
         CreatedOn   : Date;
         Reviewed    : Boolean;
         Approved    : Boolean;
-        // Country     : Country;
-        // Status      : String(1);
+        Country     : Country;
+        Status      : String(1);
     
 }
-
 
